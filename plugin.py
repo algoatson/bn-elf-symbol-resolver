@@ -92,6 +92,7 @@ def resolve_elf_symbols(bv):
             continue
 
         bv.set_comment_at(sym_addr, name)
+        bv.define_user_symbol(Symbol(SymbolType.ExternalSymbol, sym_addr, "dyn_" + name))
 
 
 resolve_elf_symbols(bv)
