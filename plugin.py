@@ -94,5 +94,15 @@ def resolve_elf_symbols(bv):
         bv.set_comment_at(sym_addr, name)
         bv.define_user_symbol(Symbol(SymbolType.ExternalSymbol, sym_addr, "dyn_" + name))
 
+def cleanup_plt(bv):
+    plt = bv.sections.get(".plt")
+    if not plt:
+        log_error("Missing .plt")
+        return
+
+    if plt:
+        bv.set_comment_at(plt.start, "the resolver entry")
+        bv.define_user_symbol(Symbol(SymbolType.FunctionSymbol, plt.start, "PLT0"))
 
 resolve_elf_symbols(bv)
+cleanup_plt(bv)
